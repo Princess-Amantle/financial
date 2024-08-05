@@ -53,7 +53,7 @@ function SignUp() {
                 </Notification>
               )}
               <Text align="center">
-                Have have an account? <Anchor href="/" size="sm">Login</Anchor>
+                Have an account? <Anchor href="/" size="sm">Login</Anchor>
               </Text>
             </Stack>
           </form>

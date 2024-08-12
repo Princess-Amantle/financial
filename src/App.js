@@ -1,27 +1,50 @@
-// src/App.js
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-//import SignIn from './SignIn';
-import SignUp from './signup';
-import Login from './login'
-import Home from './home'
-import { MantineProvider } from '@mantine/core';
-//import Home from './Home';
-//import { AuthProvider, useAuth } from './AuthContext';
+import React, { useEffect } from "react";
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
+import Login from "./components/login";
+import SignUp from "./components/register";
+import Onboarding from './components/onboarding'
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Profile from "./components/profile";
+import { useState } from "react";
+import { auth } from "./components/firebase";
 
 function App() {
+  const [user, setUser] = useState();
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      setUser(user);
+    });
+  });
   return (
-     <MantineProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Login />} /> 
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/home" element={<Home />} />
-        </Routes>
-      </Router>
-      </MantineProvider>
+    <Router>
+      <div className="App">
+        <div className="auth-wrapper">
+          <div className="auth-inner">
+            <Routes>
+              <Route
+                path="/"
+                element={user ? <Navigate to="/profile" /> : <Login />}
+              />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<SignUp />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/onboarding" element={<Onboarding />} />
+            </Routes>
+            <ToastContainer />
+          </div>
+        </div>
+      </div>
+    </Router>
   );
 }
 
